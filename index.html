@@ -1,1 +1,335 @@
-<h1>🚀 VERDEX Frontend 1000+ linhas VIVO!</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VERDEX - Plant Scanner Global</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-gradient: linear-gradient(135deg, #047857 0%, #065f46 50%, #064e3b 100%);
+      --scan-glow: #10b981; --xp-gold: #f59e0b;
+      --glass-bg: rgba(255,255,255,0.14); --glass-border: rgba(255,255,255,0.22);
+      --shadow-epic: 0 32px 64px rgba(0,0,0,0.3);
+      --btn-glow: 0 0 40px rgba(16,185,129,0.6);
+    }
+
+    html, body {
+      width: 100vw; height: 100vh; overflow: hidden;
+      background: var(--bg-gradient); font-family: system-ui, sans-serif;
+      color: white; touch-action: manipulation;
+    }
+
+    .verdex-global-v6 {
+      height: 100vh; display: flex; flex-direction: column;
+      justify-content: space-between; align-items: center;
+      padding: clamp(20px, 5vw, 40px); gap: clamp(20px, 4vw, 32px);
+    }
+
+    /* HEADER SIMPLES */
+    .header-viral { width: 100%; max-width: 800px; text-align: center; }
+    .title-global {
+      font-size: clamp(3.2rem, 10vw, 6rem); font-weight: 900;
+      background: linear-gradient(45deg, #10b981, #34d399, #6ee7b7, #10b981);
+      background-size: 400% 400%; -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; animation: titleGradient 5s infinite;
+      text-shadow: 0 0 60px rgba(16,185,129,0.6); margin-bottom: 16px;
+    }
+
+    /* STATS */
+    .stats-world {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 16px; justify-items: center; font-size: clamp(1rem, 3.2vw, 1.7rem);
+    }
+    .stat-world { text-align: center; padding: 12px; }
+    .stat-label { font-size: 0.85em; opacity: 0.85; margin-bottom: 4px; }
+    .stat-value { 
+      font-size: 1.5em; font-weight: 900;
+      background: linear-gradient(45deg, #f59e0b, #fbbf24);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* SCANNER PERFEITO */
+    .scanner-global-v6 {
+      width: clamp(340px, 78vw, 520px); height: clamp(340px, 78vw, 520px);
+      position: relative;
+    }
+    .scan-frame-global-v6 {
+      width: 100%; height: 100%; 
+      border: 6px solid #10b981; border-radius: 42px; 
+      overflow: hidden; box-shadow: 0 0 120px #10b981;
+      background: radial-gradient(circle, rgba(16,185,129,0.12), transparent);
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .scan-frame-global-v6.scanning { box-shadow: 0 0 180px #10b981; }
+    .scan-frame-global-v6.upload { border-color: #f59e0b; box-shadow: 0 0 120px #f59e0b; }
+
+    .scan-video-global-v6 {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 36px;
+      filter: contrast(1.12) brightness(1.06) saturate(1.22);
+      background: #00ff00; display: block;
+    }
+
+    .scan-placeholder-v6 {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; background: rgba(0,0,0,0.7);
+      text-align: center; font-size: clamp(3.5rem, 16vw, 8rem); gap: 12px;
+      padding: 40px;
+    }
+    .scan-placeholder-v6 span { 
+      font-size: clamp(1rem, 3vw, 1.4rem); opacity: 0.9; 
+      max-width: 80%; line-height: 1.3;
+    }
+
+    /* BOTÕES AAA ULTRA */
+    .controls-v6 {
+      display: flex; gap: 16px; width: 100%; max-width: clamp(320px, 72vw, 480px);
+      flex-wrap: wrap; justify-content: center;
+    }
+    .btn-v6 {
+      flex: 1; min-width: 140px; height: clamp(80px, 16vw, 110px);
+      border: none; border-radius: 36px; font-weight: 900; cursor: pointer;
+      font-size: clamp(1.3rem, 4.5vw, 2.2rem); transition: all 0.3s ease;
+      position: relative; overflow: hidden; backdrop-filter: blur(20px);
+    }
+    .btn-camera-v6 {
+      background: linear-gradient(145deg, #10b981, #059669);
+      box-shadow: 0 20px 40px rgba(16,185,129,0.5), var(--btn-glow);
+      color: white;
+    }
+    .btn-upload-v6 {
+      background: linear-gradient(145deg, #f59e0b, #d97706);
+      box-shadow: 0 20px 40px rgba(245,158,11,0.5), 0 0 40px rgba(245,158,11,0.4);
+      color: white;
+    }
+    .btn-v6:hover { transform: translateY(-4px) scale(1.02); }
+    .btn-v6:active { transform: translateY(2px) scale(0.98); }
+    .btn-v6:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* STATUS */
+    .status-global-v6 {
+      width: 100%; max-width: clamp(320px, 72vw, 480px); text-align: center;
+      font-size: clamp(1.1rem, 3vw, 1.6rem); padding: 20px; 
+      background: rgba(0,0,0,0.35); border-radius: 28px; backdrop-filter: blur(24px); 
+      font-weight: 700; min-height: 60px; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* RESULTADO */
+    .result-global-v6 {
+      width: 100%; max-width: clamp(360px, 82vw, 620px); text-align: center;
+      background: rgba(255,255,255,0.14); backdrop-filter: blur(40px);
+      border: 1px solid rgba(255,255,255,0.22); border-radius: 36px;
+      padding: clamp(32px, 7vw, 52px); box-shadow: var(--shadow-epic);
+    }
+
+    @keyframes titleGradient { 
+      0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} 
+    }
+    @keyframes scanPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useRef, useCallback } = React;
+
+    function VerdexV6() {
+      const [state, setState] = useState({
+        isScanning: false, scanResult: null, error: null, loading: false,
+        userStats: { scans: 15, xp: 4280, coins: 356 }, mode: 'camera'
+      });
+      const videoRef = useRef(null);
+      const canvasRef = useRef(null);
+      const fileInputRef = useRef(null);
+      const placeholderRef = useRef(null);
+
+      // PLANTAS REALISTAS + GOOGLE LENS STYLE
+      const realPlants = [
+        { species: '🌻 Helianthus annuus', health: 94, xp: 165, confidence: 97 },
+        { species: '🌿 Nephrolepis exaltata', health: 91, xp: 142, confidence: 95 },
+        { species: '🌺 Hibiscus rosa-sinensis', health: 89, xp: 178, confidence: 96 },
+        { species: '🍃 Monstera deliciosa', health: 92, xp: 155, confidence: 98 },
+        { species: '🌱 Tradescantia spathacea', health: 87, xp: 135, confidence: 93 },
+        { species: '🌳 Ficus elastica', health: 90, xp: 162, confidence: 94 },
+        { species: '🍀 Chlorophytum comosum', health: 95, xp: 148, confidence: 99 }
+      ];
+
+      const scanCamera = async () => {
+        setState(prev => ({ ...prev, isScanning: true, error: null, mode: 'camera' }));
+        
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+          });
+          const video = videoRef.current;
+          video.srcObject = stream;
+          video.play();
+          
+          if (placeholderRef.current) placeholderRef.current.style.opacity = '0';
+          
+          setTimeout(() => processImage(realPlants), 2500);
+        } catch (error) {
+          setState(prev => ({ ...prev, isScanning: false, error: 'Permita câmera' }));
+        }
+      };
+
+      const uploadImage = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        setState(prev => ({ ...prev, loading: true, error: null, mode: 'upload' }));
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => processImage(realPlants, img);
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      };
+
+      const processImage = (plants, img = null) => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        
+        if (img) {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+        } else {
+          const video = videoRef.current;
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0);
+        }
+        
+        // SIMULA GOOGLE LENS (realista)
+        const result = plants[Math.floor(Math.random() * plants.length)];
+        
+        setState(prev => ({
+          ...prev, scanResult: result,
+          userStats: {
+            ...prev.userStats,
+            scans: prev.userStats.scans + 1,
+            xp: prev.userStats.xp + result.xp,
+            coins: prev.userStats.coins + Math.floor(result.xp * 0.1)
+          },
+          loading: false
+        }));
+        
+        setTimeout(() => {
+          if (videoRef.current?.srcObject) {
+            videoRef.current.srcObject.getTracks().forEach(t => t.stop());
+          }
+          if (placeholderRef.current) placeholderRef.current.style.opacity = '1';
+          setState(prev => ({ ...prev, isScanning: false }));
+        }, 4000);
+      };
+
+      const reset = () => {
+        setState(prev => ({ ...prev, scanResult: null, error: null }));
+        if (videoRef.current?.srcObject) {
+          videoRef.current.srcObject.getTracks().forEach(t => t.stop());
+        }
+        if (placeholderRef.current) placeholderRef.current.style.opacity = '1';
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      };
+
+      return (
+        <div className="verdex-global-v6">
+          <div className="header-viral">
+            <h1 className="title-global">VERDEX</h1>
+            <div className="stats-world">
+              <div className="stat-world">
+                <div className="stat-label">🌿 Scans</div>
+                <div className="stat-value">{state.userStats.scans}</div>
+              </div>
+              <div className="stat-world">
+                <div className="stat-label">⭐ XP</div>
+                <div className="stat-value">{state.userStats.xp.toLocaleString()}</div>
+              </div>
+              <div className="stat-world">
+                <div className="stat-label">👑 Coins</div>
+                <div className="stat-value">R${state.userStats.coins}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className={`scanner-global-v6 ${state.isScanning ? 'scanning' : ''} ${state.mode === 'upload' ? 'upload' : ''}`}>
+            <video ref={videoRef} className="scan-video-global-v6" playsInline muted />
+            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            <div ref={placeholderRef} className="scan-placeholder-v6">
+              🌿
+              <span>Centralize a planta no quadro</span>
+            </div>
+          </div>
+
+          <div className="status-global-v6">
+            {state.loading && <span>🔍 Analisando imagem... <strong style={{color:'#10b981'}}>IA</strong></span>}
+            {state.isScanning && <span>🔍 Escaneando ao vivo... <strong style={{color:'#10b981'}}>2s</strong></span>}
+            {state.error && <span style={{color:'#f87171'}}>❌ {state.error}</span>}
+            {!state.isScanning && !state.loading && !state.scanResult && <span>🌱 Escolha câmera ou upload</span>}
+          </div>
+
+          <div className="controls-v6">
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={uploadImage} style={{display:'none'}} />
+            <button 
+              className="btn-v6 btn-camera-v6" 
+              onClick={state.isScanning ? null : scanCamera}
+              disabled={state.isScanning || state.loading}
+            >
+              📱 Câmera
+            </button>
+            <button 
+              className="btn-v6 btn-upload-v6" 
+              onClick={() => fileInputRef.current?.click()}
+              disabled={state.isScanning || state.loading}
+            >
+              📁 Upload
+            </button>
+          </div>
+
+          {state.scanResult && (
+            <div className="result-global-v6">
+              <h2 style={{color:'#10b981', fontSize:'clamp(1.8rem,4.5vw,2.8rem)', fontWeight:900, marginBottom:'20px'}}>
+                ✅ IDENTIFICADA!
+              </h2>
+              <div style={{fontSize:'clamp(2rem,5.5vw,3.2rem)', fontWeight:900, color:'#f59e0b', margin:'24px 0'}}>
+                {state.scanResult.species}
+              </div>
+              <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px', marginTop:'20px'}}>
+                <div style={{textAlign:'center'}}>
+                  <div style={{opacity:0.9, marginBottom:'12px', fontSize:'1.1rem'}}>❤️ Saúde</div>
+                  <div style={{color:'#10b981', fontSize:'2.4rem', fontWeight:900}}>
+                    {state.scanResult.health}%
+                  </div>
+                </div>
+                <div style={{textAlign:'center'}}>
+                  <div style={{opacity:0.9, marginBottom:'12px', fontSize:'1.1rem'}}>⭐ XP Ganho</div>
+                  <div style={{color:'#f59e0b', fontSize:'2.4rem', fontWeight:900}}>
+                    +{state.scanResult.xp}
+                  </div>
+                </div>
+              </div>
+              <button 
+                onClick={reset}
+                style={{
+                  marginTop:'24px', padding:'16px 32px', background:'linear-gradient(145deg, #6b7280, #4b5563)',
+                  border:'none', borderRadius:'24px', color:'white', fontWeight:800, fontSize:'1.1rem',
+                  cursor:'pointer', boxShadow:'0 15px 30px rgba(107,114,128,0.4)'
+                }}
+              >
+                🔄 Nova análise
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<VerdexV6 />, document.getElementById('root'));
+  </script>
+</body>
+</html>
